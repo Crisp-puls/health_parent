@@ -1,0 +1,2 @@
+com\baidu\health\controller\CheckItemController.class
+com\baidu\health\controller\MyExceptionAdvice.class

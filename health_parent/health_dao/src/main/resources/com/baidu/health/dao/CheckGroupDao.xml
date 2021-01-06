@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baidu.health.dao.CheckGroupDao">
+    <!--    查询所有检查组-->
+    <select id="findAll" resultType="com.baidu.health.pojo.CheckGroup">
+         select * from t_checkgroup
+    </select>
+
+    <!--    添加检查组信息并且返回查询检查组的id-->
+    <insert id="add" parameterType="checkgroup">
+        insert into t_checkgroup (code,name,helpCode,sex,remark,attention)
+        values (#{code},#{name},#{helpCode},#{sex},#{remark},#{attention})
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+        select last_insert_id(#{id})
+        </selectKey>
+    </insert>
+    <insert id="addCheckGroupCheckItem">
+        insert into t_checkgroup_checkitem (checkgroup_id, checkitem_id) values (#{checkGroupId}, #{checkitemId})
+    </insert>
+
+<!--    根据id查询检查组信息 回显数据-->
+    <select id="findById" resultType="com.baidu.health.pojo.CheckGroup">
+         select * from t_checkgroup where id=#{checkGroupId}
+    </select>
+
+<!--    根据检查组id查询选中的检查项id 回显数据-->
+    <select id="findCheckItemIdsByCheckGroupId" parameterType="int" resultType="Integer">
+        select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{checkGroupId}
+    </select>
+
+<!--    修改检查组-->
+    <update id="update" parameterType="checkgroup">
+         update t_checkgroup
+        set
+            code=#{code},
+            name=#{name},
+            helpCode=#{helpCode},
+            sex=#{sex},
+            remark=#{remark},
+            attention=#{attention}
+        where id=#{id}
+    </update>
+    <!--    删除中间表-->
+    <delete id="deleteCheckGroupCheckItem" parameterType="int">
+        delete from t_setmeal_checkgroup where checkgroup_id=#{id}
+    </delete>
+
+    <!--    查询是否有被套餐使用-->
+    <select id="findSetmealCountByCheckGroupId" parameterType="int" resultType="int">
+         select count(1) from t_setmeal_checkgroup where checkgroup_id=#{id}
+    </select>
+
+    <!--    删除检查组信息-->
+    <delete id="deleteById" parameterType="int">
+        delete from t_checkgroup where id=#{id}
+     </delete>
+
+</mapper>

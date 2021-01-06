@@ -1,0 +1,4 @@
+com\baidu\health\constant\MessageConstant.class
+com\baidu\health\exceptions\BusinessException.class
+com\baidu\health\exceptions\MyHandlerExceptionResolver.class
+com\baidu\health\exceptions\SysException.class
