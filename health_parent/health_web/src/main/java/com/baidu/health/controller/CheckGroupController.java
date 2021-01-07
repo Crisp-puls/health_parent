@@ -103,6 +103,6 @@ public class CheckGroupController {
     public Result deleteById(int id){
         //调用业务服务删除
         checkGroupService.deleteById(id);
-        return new Result(true,MessageConstant.DELETE_CHECKGROUP_SUCCESS);
+        return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
 }
