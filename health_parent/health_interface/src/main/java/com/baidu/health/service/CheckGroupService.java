@@ -55,6 +55,4 @@ public interface CheckGroupService {
      */
     void deleteById(int id) throws BusinessException;
 
-
-
 }

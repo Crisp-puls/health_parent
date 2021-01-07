@@ -88,4 +88,5 @@
         delete from t_checkgroup where id=#{id}
      </delete>
 
+    <select id="findByIdOrNameOrCoed" resultType="com.baidu.health.pojo.CheckGroup"></select>
 </mapper>

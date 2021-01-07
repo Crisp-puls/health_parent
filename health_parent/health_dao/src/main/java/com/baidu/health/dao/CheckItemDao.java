@@ -64,4 +64,12 @@ public interface CheckItemDao {
      * @return
      */
     Page<CheckItem> findByCondition(String queryString);
+
+    /**
+     * 根据 id name coed 查询检查项目
+     * @param checkItem
+     * @return
+     */
+    CheckItem findByIdOrNameOrcoed(CheckItem checkItem);
+
 }

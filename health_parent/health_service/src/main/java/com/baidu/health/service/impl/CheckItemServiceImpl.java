@@ -37,7 +37,9 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Override
     public void add(CheckItem checkItem) {
         CheckItem findByNameCheckItem = checkItemDao.findByName(checkItem);
+        //CheckItem findByNameCheckItem = checkItemDao.findByIdOrNameOrcoed(checkItem);
         CheckItem findByCoedCheckItem = checkItemDao.findByCoed(checkItem);
+        //CheckItem findByCoedCheckItem = checkItemDao.findByIdOrNameOrcoed(checkItem);
         if (null != findByNameCheckItem) {
             throw new BusinessException("添加的检查项项目名相同！！");
             //TODO 设置常量类的返回消息

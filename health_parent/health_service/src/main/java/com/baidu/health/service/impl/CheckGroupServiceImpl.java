@@ -42,6 +42,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     public void add(CheckGroup checkGroup, Integer[] checkitemIds) {
         //判断添加或者修改时是否有重复添加
         CheckGroup findByNameCheckGroup= checkGroupDao.findByName(checkGroup);
+        //CheckGroup findByNameCheckGroup= checkGroupDao.findByIdOrNameOrCoed(checkGroup);
         CheckGroup findByCoedCheckGroup = checkGroupDao.findByCoed(checkGroup);
         if (null != findByNameCheckGroup) {
             throw new BusinessException("添加的检查项组名称相同！！");

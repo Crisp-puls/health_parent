@@ -89,5 +89,10 @@ public interface CheckGroupDao {
      */
     void deleteById(int id);
 
-
+    /**
+     * 根据 id name coed 查询检查组
+     * @param checkGroup
+     * @return
+     */
+    CheckGroup findByIdOrNameOrCoed(CheckGroup checkGroup);
 }

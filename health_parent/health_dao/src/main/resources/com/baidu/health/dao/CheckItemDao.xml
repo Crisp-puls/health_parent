@@ -67,4 +67,17 @@
         </where>
     </select>
 
+<!--    根据id name code查询检查项-->
+    <select id="findByIdOrNameOrcoed" parameterType="checkItem" resultType="checkGroup">
+        select * from t_checkitem
+        <if test="id != id and id.length>0" >
+            where id=#{id}
+        </if>
+        <if test="name != null and name.length>0">
+            where name=#{name}
+        </if>
+        <if test="code != null and code.length>0">
+            where code=#{code}
+        </if>
+    </select>
 </mapper>
