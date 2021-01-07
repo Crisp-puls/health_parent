@@ -20,19 +20,26 @@ public class CheckItemController {
     @Reference
     private CheckItemService checkItemService;
 
-    //查询所有检查项
+    /**
+     * 查询所有检查项 不暴露给外面
+     * @return
+     */
     @GetMapping("/findAll")
     public Result findAll(){
         List<CheckItem> checkItemList =checkItemService.findAll();
         return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkItemList);
     }
-    //添加检查项
+
+    /**
+     * 添加检查项
+     * @param checkItem
+     * @return
+     */
     @PostMapping("/add")
     public Result add(@RequestBody CheckItem checkItem){
         checkItemService.add(checkItem);
         return new Result(true,MessageConstant.ADD_CHECKGROUP_SUCCESS);
     }
-
 
     /**
      * 检查项分页查询
@@ -48,13 +55,22 @@ public class CheckItemController {
 
     //TODO 是否需要实现懒加载？
 
-    //根据id删除检查项 为什么预习资料的是post请求？改数据库的都需要使用post请求
+    /**
+     * 根据id删除检查项  改数据库的都需要使用post请求
+     * @param id
+     * @return
+     */
     @PostMapping("/deleteById")
     public Result deleteById(int id){
         checkItemService.deleteById(id);
         return new Result(true,MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
-    //根据id查询检查项回显
+
+    /**
+     * 根据id查询检查项回显
+     * @param id
+     * @return
+     */
     @GetMapping("/findById")
     public Result findById(int id){
         CheckItem lzyCheckItem = new CheckItem();
@@ -63,8 +79,11 @@ public class CheckItemController {
         return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS,checkItem);
     }
 
-
-    //更新
+    /**
+     * 修改检查项
+     * @param checkItem
+     * @return
+     */
     @PostMapping("/update")
     public Result update(@RequestBody CheckItem checkItem){
         checkItemService.update(checkItem);

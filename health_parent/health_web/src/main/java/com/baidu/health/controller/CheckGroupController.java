@@ -55,42 +55,43 @@ public class CheckGroupController {
 
     /**
      * 根据id查询检查组信息回显
-     * @param checkGroupId 检查组id
+     * @param id 检查组id
      * @return
      */
     @GetMapping("/findById")
-    public Result findById(int checkGroupId){
+    public Result findById(int id){
         // 调用业务服务
         //TODO 使用懒
         CheckGroup LzyCheckGroup = new CheckGroup();
-        LzyCheckGroup.setId(checkGroupId);
+        LzyCheckGroup.setId(id);
         CheckGroup checkGroup = checkGroupService.findById(LzyCheckGroup);
         return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroup);
     }
 
+
     /**
-     * 根据检查组id查询选中的检查项集 并回显数据
-     * @param checkGroupId 检查项id
+     * 通过检查组id查询选中的检查项id
+     * @param id
      * @return
      */
     @GetMapping("/findCheckItemIdsByCheckGroupId")
-    public Result findCheckItemIdsByCheckGroupId(int checkGroupId){
-        List<Integer> checkItemIds = checkGroupService.findCheckItemIdsByCheckGroupId(checkGroupId);
-        // TODO 需要自定义消息 随便写的
+    public Result findCheckItemIdsByCheckGroupId(int id){
+        // 通过检查组id查询选中的检查项id集合
+        List<Integer> checkItemIds = checkGroupService.findCheckItemIdsByCheckGroupId(id);
         return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS,checkItemIds);
     }
 
     /**
      * 修改检查组
-     * @param checkGroup 检查组信息
-     * @param checkitemIds 需要需要勾选的检查项
+     * @param checkgroup 检查组信息
+     * @param checkitemIds 选中的检查项id数组
      * @return
      */
     @PostMapping("/update")
-    public Result update (@RequestBody CheckGroup checkGroup,Integer[] checkitemIds){
-        checkGroupService.update(checkGroup,checkitemIds);
-        // TODO 需要自定义消息 我随便写的
-        return new Result(true,MessageConstant.EDIT_CHECKGROUP_SUCCESS);
+    public Result update(@RequestBody CheckGroup checkgroup, Integer[] checkitemIds){
+        // 调用服务 修改检查组
+        checkGroupService.update(checkgroup, checkitemIds);
+        return new Result(true, MessageConstant.EDIT_CHECKGROUP_SUCCESS);
     }
 
     /**

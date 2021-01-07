@@ -36,18 +36,18 @@ public interface CheckGroupService {
     CheckGroup findById(CheckGroup lzyCheckGroup);
 
     /**
-     * 根据检查组id查询选中的检查项id 回显数据
-     * @param checkGroupId
+     * 通过检查组id查询选中的检查项id
+     * @param id
      * @return
      */
-    List<Integer> findCheckItemIdsByCheckGroupId(int checkGroupId);
+    List<Integer> findCheckItemIdsByCheckGroupId(int id);
 
     /**
      * 修改检查组
-     * @param checkGroup
-     * @param checkitemIds
+     * @param checkgroup 检查组信息
+     * @param checkitemIds 选中的检查项id数组
      */
-    void update(CheckGroup checkGroup, Integer[] checkitemIds);
+    void update(CheckGroup checkgroup, Integer[] checkitemIds);
 
     /**
      * 删除检查组

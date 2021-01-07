@@ -78,31 +78,76 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         return checkGroupDao.findById(lzyCheckGroup);
     }
 
+
     /**
-     * 根据检查组id查询选中的检查项id 回显数据
-     * @param checkGroupId
+     * 通过检查组id查询选中的检查项id
+     * @param id
      * @return
      */
     @Override
-    public List<Integer> findCheckItemIdsByCheckGroupId(int checkGroupId) {
-        return checkGroupDao.findCheckItemIdsByCheckGroupId(checkGroupId);
+    public List<Integer> findCheckItemIdsByCheckGroupId(int id) {
+        return checkGroupDao.findCheckItemIdsByCheckGroupId(id);
     }
 
+//    /**
+//     * 更新检查组
+//     * @param checkGroup
+//     * @param checkitemIds
+//     */
+//    @Override
+//    @Transactional
+//    public void update(CheckGroup checkGroup, Integer[] checkitemIds) {
+//        CheckGroup findByNameCheckGroup = checkGroupDao.findByName(checkGroup);
+//        CheckGroup findByCoedCheckGroup = checkGroupDao.findByCoed(checkGroup);
+//        //判断为空说明没有相同的
+//        if (null != findByNameCheckGroup){
+//            //不为空说明是相同的 传入的项目名在数据库中有
+//            //判断id是否相同 相同说明是自己的项目名
+//            if (findByNameCheckGroup.getId() != checkGroup.getId()){
+//                //不同说明不是自己的项目名
+//                throw new BusinessException("修改的检查组，名称重复！！");
+//                //TODO 设置常量类的返回消息
+//            }
+//        }
+//        //判断为空说明没有相同的
+//        if (null != findByCoedCheckGroup){
+//            //不为空说明是相同的 传入的项目名在数据库中有
+//            //判断id是否相同 相同说明是自己的项目名
+//            if (findByCoedCheckGroup.getId() != checkGroup.getId()){
+//                //不同说明不是自己的项目名
+//                throw new BusinessException("修改的检查组，编码重复！！");
+//                //TODO 设置常量类的返回消息
+//            }
+//        }
+//        // 先执行检查组
+//        checkGroupDao.update(checkGroup);
+//        // 删除中间表关系
+//        checkGroupDao.deleteCheckGroupCheckItem(checkGroup.getId());
+//        // 创建新的中间表关系
+//        if(null != checkitemIds){
+//            for (Integer checkitemId : checkitemIds) {
+//                checkGroupDao.addCheckGroupCheckItem(checkGroup.getId(), checkitemId);
+//            }
+//        }
+//    }
+
+
     /**
-     * 更新检查组
-     * @param checkGroup
-     * @param checkitemIds
+     * 修改检查组
+     * @param checkgroup 检查组信息
+     * @param checkitemIds 选中的检查项id数组
      */
     @Override
     @Transactional
-    public void update(CheckGroup checkGroup, Integer[] checkitemIds) {
-        CheckGroup findByNameCheckGroup = checkGroupDao.findByName(checkGroup);
-        CheckGroup findByCoedCheckGroup = checkGroupDao.findByCoed(checkGroup);
+    public void update(CheckGroup checkgroup, Integer[] checkitemIds) {
+
+        CheckGroup findByNameCheckGroup = checkGroupDao.findByName(checkgroup);
+        CheckGroup findByCoedCheckGroup = checkGroupDao.findByCoed(checkgroup);
         //判断为空说明没有相同的
         if (null != findByNameCheckGroup){
             //不为空说明是相同的 传入的项目名在数据库中有
             //判断id是否相同 相同说明是自己的项目名
-            if (findByNameCheckGroup.getId() != checkGroup.getId()){
+            if (findByNameCheckGroup.getId() != checkgroup.getId()){
                 //不同说明不是自己的项目名
                 throw new BusinessException("修改的检查组，名称重复！！");
                 //TODO 设置常量类的返回消息
@@ -112,22 +157,24 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         if (null != findByCoedCheckGroup){
             //不为空说明是相同的 传入的项目名在数据库中有
             //判断id是否相同 相同说明是自己的项目名
-            if (findByCoedCheckGroup.getId() != checkGroup.getId()){
+            if (findByCoedCheckGroup.getId() != checkgroup.getId()){
                 //不同说明不是自己的项目名
                 throw new BusinessException("修改的检查组，编码重复！！");
                 //TODO 设置常量类的返回消息
             }
         }
-        // 先执行检查组
-        checkGroupDao.update(checkGroup);
-        // 删除中间表关系
-        checkGroupDao.deleteCheckGroupCheckItem(checkGroup.getId());
-        // 创建新的中间表关系
+        //- 先更新检查组
+        checkGroupDao.update(checkgroup);
+        //- 先删除旧关系
+        checkGroupDao.deleteCheckGroupCheckItem(checkgroup.getId());
+        //- 遍历选中的检查项id的数组
         if(null != checkitemIds){
             for (Integer checkitemId : checkitemIds) {
-                checkGroupDao.addCheckGroupCheckItem(checkGroup.getId(), checkitemId);
+                //- 添加检查组与检查项的关系
+                checkGroupDao.addCheckGroupCheckItem(checkgroup.getId(), checkitemId);
             }
         }
+        //- 添加事务控制
     }
     /**
      * 检查项的分页查询
