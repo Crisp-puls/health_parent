@@ -2,6 +2,7 @@ package com.baidu.health.service.impl;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baidu.health.constant.MessageConstant;
 import com.baidu.health.dao.SetmealDao;
 import com.baidu.health.entity.PageResult;
 import com.baidu.health.entity.QueryPageBean;
@@ -12,6 +13,7 @@ import com.baidu.health.pojo.Setmeal;
 import com.baidu.health.service.SetmealService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -100,10 +102,11 @@ public class SetmealServiceImpl implements SetmealService {
      * @param checkgroupIds
      */
     @Override
-    public void update(Setmeal setmeal, List<Integer>[] checkgroupIds) {
+    @Transactional
+    public void update(Setmeal setmeal, Integer[] checkgroupIds) {
 
         Setmeal findByNameSetmeal = setmealDao.findByName(setmeal);
-        Setmeal findByCoedSetmeal = setmealDao.findByCoed(setmeal);
+        Setmeal findByCoedSetmeal = setmealDao.findByCode(setmeal);
         //判断为空说明没有相同的
         if (null != findByNameSetmeal){
             //不为空说明是相同的 传入的项目名在数据库中有
@@ -129,8 +132,28 @@ public class SetmealServiceImpl implements SetmealService {
         //删除套餐与检查组的旧关系
         setmealDao.deleteSetmealCheckGroup(setmeal.getId());
         //添加套餐与检查组的新关系
-        for (List<Integer> checkgroupId : checkgroupIds) {
-            setmealDao.addSetmealCheckGroup(setmeal.getId(), checkgroupId);
+        if(null != checkgroupIds){
+            for (Integer checkgroupId : checkgroupIds) {
+                setmealDao.addSetmealCheckGroup(setmeal.getId(), checkgroupId);
+            }
         }
+    }
+
+    /**
+     * 根据id删除套餐信息
+     * @param id
+     */
+    @Override
+    @Transactional
+    public void deleteById(int id) {
+        int count = setmealDao.findOrderCountBySetmealId(id);
+        if (count > 0){
+            //该套餐被订单使用了，不能删除
+            throw new BusinessException("该套餐被订单使用了，不能删除！");
+        }
+        //该套餐没有被订单使用 先删除套餐与检查组的关系
+        setmealDao.deleteSetmealCheckGroup(id);
+        //再删除套餐
+        setmealDao.deleteById(id);
     }
 }

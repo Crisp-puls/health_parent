@@ -1,6 +1,6 @@
 package com.baidu.health.dao;
 
-import com.baidu.health.pojo.CheckItem;
+
 import com.baidu.health.pojo.Setmeal;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
@@ -67,4 +67,19 @@ public interface SetmealDao {
      * @param id
      */
     void deleteSetmealCheckGroup(Integer id);
+
+    /**
+     * 查询该套餐是否被订单使用
+     * @param id
+     * @return
+     */
+    int findOrderCountBySetmealId(int id);
+
+    /**
+     * 根据id删除套餐
+     * @param id
+     */
+    void deleteById(int id);
+
+
 }

@@ -84,14 +84,24 @@ public class SetmealController {
     }
 
     /**
-     * 修改
+     * 修改套餐
      */
     @PostMapping("/update")
-    public Result update(@RequestBody Setmeal setmeal, List<Integer>[] checkgroupIds){
+    public Result update(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
         // 调用业务服务修改
         setmealService.update(setmeal, checkgroupIds);
         // 响应结果
         return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
     }
 
+    /**
+     * 删除套餐
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete")
+    public Result delete(int id){
+        setmealService.deleteById(id);
+        return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
+    }
 }
