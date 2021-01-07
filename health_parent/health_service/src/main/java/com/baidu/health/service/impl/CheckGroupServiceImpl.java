@@ -153,8 +153,8 @@ public class CheckGroupServiceImpl implements CheckGroupService {
             queryPageBean.setQueryString("%" + queryPageBean.getQueryString() + "%");
         }
         // page extends arrayList
-        Page<CheckGroup> page = checkGroupDao.findByCondition(queryPageBean.getQueryString());
-        PageResult<CheckGroup> pageResult = new PageResult<CheckGroup>(page.getTotal(),page.getResult());
+        Page<CheckGroup> list = checkGroupDao.findByCondition(queryPageBean.getQueryString());
+        PageResult<CheckGroup> pageResult = new PageResult<CheckGroup>(list.getTotal(),list.getResult());
         return pageResult;
     }
     /**

@@ -1,7 +1,11 @@
 package com.baidu.health.dao;
 
+import com.baidu.health.pojo.CheckItem;
 import com.baidu.health.pojo.Setmeal;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SetmealDao {
     /**
@@ -30,4 +34,37 @@ public interface SetmealDao {
      * @return
      */
     Setmeal findByCode(Setmeal setmeal);
+
+    /**
+     * 查询套餐分页
+     * @param queryString
+     * @return
+     */
+    Page<Setmeal> findByCondition(String queryString);
+
+    /**
+     * 根据id查询套餐 回显数据
+     * @param setmealLzy
+     * @return
+     */
+    Setmeal findById(Setmeal setmealLzy);
+
+    /**
+     * 根据套餐id 查询检查组集合 回显数据
+     * @param id
+     * @return
+     */
+    List<Integer> findCheckgroupIdsBySetmealId(int id);
+
+    /**
+     * 修改套餐信息
+     * @param setmeal
+     */
+    void update(Setmeal setmeal);
+
+    /**
+     * 删除套餐与检查组的旧关系
+     * @param id
+     */
+    void deleteSetmealCheckGroup(Integer id);
 }

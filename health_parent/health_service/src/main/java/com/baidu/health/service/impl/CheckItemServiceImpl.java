@@ -125,15 +125,18 @@ public class CheckItemServiceImpl implements CheckItemService {
         if (queryPageBean.getPageSize()>50){
             queryPageBean.setPageSize(50);
         }
+        //传入两个数据当前页数和每页条数
+        //pageHelper.startPage(1,10);
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
-        // 条件查询
+        // 判断是否有条件查询
         if (StringUtils.isNotEmpty(queryPageBean.getQueryString())) {
             // 有查询条件， 使用模糊查询 拼接上%
             queryPageBean.setQueryString("%" + queryPageBean.getQueryString() + "%");
         }
-        // page extends arrayList
+        // page extends arrayList 返回的值
         Page<CheckItem> page = checkItemDao.findByCondition(queryPageBean.getQueryString());
         PageResult<CheckItem> pageResult = new PageResult<CheckItem>(page.getTotal(), page.getResult());
+        //list<Country> list = countryMapper.selectIf(1);
         return pageResult;
     }
 }

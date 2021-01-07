@@ -18,7 +18,8 @@
         values (#{setmealId},#{checkgroupId})
     </insert>
 
-<!--    根据name查询套餐 校验添加修改是否有重复-->
+
+    <!--    根据name查询套餐 校验添加修改是否有重复-->
     <select id="findByName" resultType="com.baidu.health.pojo.Setmeal">
          select * from t_setmeal where name=#{name}
     </select>
@@ -28,4 +29,41 @@
         select * from t_setmeal where code=#{code}
     </select>
 
+<!--    分页查询套餐-->
+    <select id="findByCondition" parameterType="String"  resultType="com.baidu.health.pojo.Setmeal">
+        select * From t_setmeal
+        <if test="value != null and value.length > 0">
+            where code like #{queryString} or name like #{queryString} or helpCode like #{queryString}
+        </if>
+    </select>
+
+<!--    根据id套餐 回显数据-->
+    <select id="findById" parameterType="int" resultType="com.baidu.health.pojo.Setmeal">
+         select * from t_setmeal where id=#{id}
+    </select>
+<!--    根据套餐id 查询检查组集合 回显数据-->
+    <select id="findCheckgroupIdsBySetmealId"  parameterType="int" resultType="java.lang.Integer">
+        select checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id}
+    </select>
+
+<!--    修改套餐信息-->
+    <update id="update" parameterType="setmeal">
+        update t_setmeal
+        set
+        name=#{name},
+        code=#{code},
+        helpCode=#{helpCode},
+        sex=#{sex},
+        age=#{age},
+        price=#{price},
+        remark=#{remark},
+        attention=#{attention},
+        img=#{img}
+        where id=#{id}
+    </update>
+
+<!--    删除套餐与检查组的旧关系-->
+    <delete id="deleteSetmealCheckGroup" parameterType="int">
+        delete from t_setmeal_checkgroup where setmeal_id=#{id}
+    </delete>
 </mapper>
