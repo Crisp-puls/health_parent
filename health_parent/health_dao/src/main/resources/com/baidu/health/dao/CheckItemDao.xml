@@ -39,6 +39,7 @@
        select * from t_checkitem where id=#{id}
     </select>
 
+
     <update id="update" parameterType="checkitem">
       update t_checkitem
         set
@@ -50,6 +51,20 @@
         type=#{type},
         remark=#{remark},
         attention=#{attention}
-    where id=#{id}
-</update>
+         where id=#{id}
+    </update>
+
+    <!--    查询检查项分页-->
+    <!-- Mybatis 动态参数赋值 DynamicContext<if>标签里的变量，如果参数类型是基本数据类型，
+    只能用 value 或 _parameter，这个是由它的底层ognl表达式决定的。如果参数类型是对象类型，
+    则可以填它的属性。另外，使用#的参数可以是形参名也可以是value-->
+    <select id="findByCondition" parameterType="string" resultType="checkitem">
+        select * From t_checkitem
+        <where>
+            <if test="value !=null and value.length>0">
+                code like #{queryString} or name like #{queryString}
+            </if>
+        </where>
+    </select>
+
 </mapper>

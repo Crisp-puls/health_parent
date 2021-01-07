@@ -3,6 +3,8 @@ package com.baidu.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.baidu.health.constant.MessageConstant;
+import com.baidu.health.entity.PageResult;
+import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.entity.Result;
 import com.baidu.health.pojo.CheckItem;
 import com.baidu.health.service.CheckItemService;
@@ -30,12 +32,24 @@ public class CheckItemController {
         checkItemService.add(checkItem);
         return new Result(true,MessageConstant.ADD_CHECKGROUP_SUCCESS);
     }
-    //TODO 检查项分页 新知识
+
+
+    /**
+     * 检查项分页查询
+     * @param queryPageBean
+     * @return
+     */
+    @PostMapping("/findPage")
+    public Result findPage(@RequestBody QueryPageBean queryPageBean){
+        //封装到queryPageBean中里面有当前页数和每页条数和查询条件
+        PageResult<CheckItem> pageResult=checkItemService.findPage(queryPageBean);
+        return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,pageResult);
+    }
 
     //TODO 是否需要实现懒加载？
 
     //根据id删除检查项 为什么预习资料的是post请求？改数据库的都需要使用post请求
-    @GetMapping("/deleteById")
+    @PostMapping("/deleteById")
     public Result deleteById(int id){
         checkItemService.deleteById(id);
         return new Result(true,MessageConstant.DELETE_CHECKGROUP_SUCCESS);

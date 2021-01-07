@@ -1,6 +1,7 @@
 package com.baidu.health.dao;
 
 import com.baidu.health.pojo.CheckGroup;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,6 +18,19 @@ public interface CheckGroupDao {
      * @param checkGroup
      */
     void add(CheckGroup checkGroup);
+    /**
+     * 根据name查询检查组 判断添加或者修改时是否有重复添加
+     * @param checkGroup
+     * @return
+     */
+    CheckGroup findByName(CheckGroup checkGroup);
+
+    /**
+     * 根据coed查询检查组 判断添加或者修改时是否有重复添加
+     * @param checkGroup
+     * @return
+     */
+    CheckGroup findByCoed(CheckGroup checkGroup);
 
     /**
      * 添加检查组与检查项的关系 绑定中间表
@@ -24,6 +38,11 @@ public interface CheckGroupDao {
      * @param checkitemId
      */
     void addCheckGroupCheckItem(@Param("checkGroupId")Integer checkGroupId,@Param("checkitemId") Integer checkitemId);
+
+    /**
+     * 检查项的分页查询
+     */
+    Page<CheckGroup> findByCondition(String queryString);
 
     /**
      * 删除时查询是否被套餐使用
@@ -63,4 +82,7 @@ public interface CheckGroupDao {
      * @param checkGroup
      */
     void update(CheckGroup checkGroup);
+
+
+
 }

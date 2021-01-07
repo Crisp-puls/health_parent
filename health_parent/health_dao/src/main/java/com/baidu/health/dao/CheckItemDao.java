@@ -1,6 +1,8 @@
 package com.baidu.health.dao;
 
+import com.github.pagehelper.Page;
 import com.baidu.health.pojo.CheckItem;
+
 
 import java.util.List;
 
@@ -55,4 +57,11 @@ public interface CheckItemDao {
      * @param checkItem
      */
     void update(CheckItem checkItem);
+
+    /**
+     *检查项分页查询
+     * @param queryString
+     * @return
+     */
+    Page<CheckItem> findByCondition(String queryString);
 }

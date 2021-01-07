@@ -1,5 +1,7 @@
 package com.baidu.health.service;
 
+import com.baidu.health.entity.PageResult;
+import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.exceptions.BusinessException;
 import com.baidu.health.pojo.CheckGroup;
 
@@ -18,6 +20,13 @@ public interface CheckGroupService {
      * 添加检查组
      */
     void add(CheckGroup checkGroup, Integer[] checkitemIds);
+
+    /**
+     * 检查项的分页查询
+     * @param queryPageBean
+     * @return
+     */
+    PageResult<CheckGroup> findPage(QueryPageBean queryPageBean);
 
     /**
      * 根据id查询检查组回显数据
@@ -45,6 +54,7 @@ public interface CheckGroupService {
      * @param id
      */
     void deleteById(int id) throws BusinessException;
+
 
 
 }

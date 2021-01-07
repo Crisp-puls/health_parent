@@ -1,5 +1,7 @@
 package com.baidu.health.service;
 
+import com.baidu.health.entity.PageResult;
+import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.exceptions.BusinessException;
 import com.baidu.health.pojo.CheckItem;
 
@@ -37,5 +39,10 @@ public interface CheckItemService {
      */
     void update(CheckItem checkItem) throws BusinessException;
 
-
+    /**
+     * 检查项分页查询
+     * @param queryPageBean
+     * @return
+     */
+    PageResult<CheckItem> findPage(QueryPageBean queryPageBean);
 }
