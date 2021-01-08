@@ -68,18 +68,24 @@
     </select>
 
 <!--    根据id name code查询检查项-->
-    <select id="findByIdOrNameOrcoed" parameterType="checkItem" resultType="checkGroup">
-        select * from t_checkitem
-        <where>
-            <if test="id != id and id.length>0" >
-                and id=#{id}
-            </if>
-            <if test="name != null and name.length>0">
-                and name=#{name}
-            </if>
-            <if test="code != null and code.length>0">
-                and code=#{code}
-            </if>
-        </where>
-    </select>
+<!--    <select id="findByIdOrNameOrcoed" parameterType="checkItem" resultType="checkGroup">-->
+<!--        select * from t_checkitem-->
+<!--        <where>-->
+<!--            <choose>-->
+<!--                <when test="name != null and name.length>0">-->
+<!--                    or name=#{name}-->
+<!--                </when>-->
+<!--                <when test="code != null and code.length>0">-->
+<!--                    or code=#{code}-->
+<!--                </when>-->
+<!--                <otherwise></otherwise>-->
+<!--            </choose>-->
+<!--            <when test="name != null and name.length>0">-->
+<!--                or name=#{name}-->
+<!--            </when>-->
+<!--            <if test="code != null and code.length>0">-->
+<!--                or code=#{code}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
 </mapper>

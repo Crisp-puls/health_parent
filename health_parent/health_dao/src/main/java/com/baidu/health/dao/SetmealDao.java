@@ -36,7 +36,7 @@ public interface SetmealDao {
     Setmeal findByCode(Setmeal setmeal);
 
     /**
-     * 查询套餐分页
+     * 套餐条件查询
      * @param queryString
      * @return
      */

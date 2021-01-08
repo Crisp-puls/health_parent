@@ -10,6 +10,7 @@ import com.baidu.health.pojo.Setmeal;
 import com.baidu.health.service.SetmealService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service(interfaceClass = SetmealService.class)
 public class SetmealServiceImpl implements SetmealService {
 
+    @Autowired
     private SetmealDao setmealDao;
     /**
      * 添加检查组套餐
@@ -24,6 +26,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @param checkgroupIds
      */
     @Override
+    @Transactional
     public void add(Setmeal setmeal, Integer[] checkgroupIds) {
         Setmeal findByNameSetmeal =setmealDao.findByName(setmeal);
         Setmeal findByCodeSetmeal =setmealDao.findByCode(setmeal);
@@ -54,25 +57,19 @@ public class SetmealServiceImpl implements SetmealService {
      * @param queryPageBean
      * @return
      */
+
     @Override
     public PageResult<Setmeal> findPage(QueryPageBean queryPageBean) {
-        if (queryPageBean.getPageSize()>50 ){
-            queryPageBean.setPageSize(50);
+        queryPageBean.setPageSize(queryPageBean.getPageSize()>50?50:queryPageBean.getPageSize());
+        PageHelper.startPage(queryPageBean.getCurrentPage(),queryPageBean.getPageSize());
+        // 条件查询
+        if(StringUtils.isNotEmpty(queryPageBean.getQueryString())){
+            // 模糊查询
+            queryPageBean.setQueryString("%"+queryPageBean.getQueryString()+"%");
         }
-        //传入两个数据当前页数和每页条数
-        //pageHelper.startPage(1,10);
-        PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
-        // 判断是否有条件查询
-        if (StringUtils.isNotEmpty(queryPageBean.getQueryString())) {
-            // 有查询条件， 使用模糊查询 拼接上%
-            queryPageBean.setQueryString("%" + queryPageBean.getQueryString() + "%");
-        }
-        // page extends arrayList 返回的值 list<Country> list = countryMapper.selectIf(1);
-        Page<Setmeal> page = setmealDao.findByCondition(queryPageBean.getQueryString());
-        PageResult<Setmeal> pageResult = new PageResult<Setmeal>(page.getTotal(), page.getResult());
-        return pageResult;
+        Page<Setmeal> setmealPage = setmealDao.findByCondition(queryPageBean.getQueryString());
+        return new PageResult<Setmeal>(setmealPage.getTotal(),setmealPage.getResult());
     }
-
     /**
      * 根据id查询套餐 回显数据
      * @param setmealLzy
@@ -126,7 +123,7 @@ public class SetmealServiceImpl implements SetmealService {
         }
         //执行更新套餐操作
         setmealDao.update(setmeal);
-        //删除套餐与检查组的旧关系
+        //删除套餐与检查组的旧关
         setmealDao.deleteSetmealCheckGroup(setmeal.getId());
         //添加套餐与检查组的新关系
         if(null != checkgroupIds){

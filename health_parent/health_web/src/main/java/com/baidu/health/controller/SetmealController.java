@@ -5,20 +5,27 @@ import com.baidu.health.constant.MessageConstant;
 import com.baidu.health.entity.PageResult;
 import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.entity.Result;
+import com.baidu.health.exceptions.BusinessException;
 import com.baidu.health.pojo.Setmeal;
 import com.baidu.health.service.SetmealService;
 import com.baidu.health.utils.QiNiuUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 @RestController
 @RequestMapping("/setmeal")
 public class SetmealController {
+
+    private static Logger log =LoggerFactory.getLogger(SetmealController.class);
 
     @Reference
     private SetmealService setmealService;
@@ -30,10 +37,39 @@ public class SetmealController {
      */
     @PostMapping("/upload")
     public Result upload(MultipartFile imgFile){
-        //TODO 明天学习
-        return null;
+        //1.获取源文件名
+        String originalFilename = imgFile.getOriginalFilename();
+        //2.截取后缀名字
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        //3.生成唯一id
+        String uniqueId = UUID.randomUUID().toString();
+        //4.拼接唯一文件名
+        String fileName = uniqueId + suffix;
+        //5.调用七牛云存储工具上传图片
+        try {
+            QiNiuUtils.uploadViaByte(imgFile.getBytes(),fileName);
+            //6.构建返回的数据
+            Map<String, String> map = new HashMap<String, String>(2);
+            map.put("imgName",fileName);
+            map.put("domain",QiNiuUtils.DOMAIN);
+            //7.放到Result，在返回给页面
+            return new Result(true,MessageConstant.PIC_UPLOAD_SUCCESS,map);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new BusinessException(MessageConstant.PIC_UPLOAD_FAIL);
+        }
     }
 
+    /**
+     * 套餐分页查询
+     * @param queryPageBean
+     * @return
+     */
+    @PostMapping("/findPage")
+    public Result findPage(@RequestBody QueryPageBean queryPageBean){
+        PageResult<Setmeal> setmealPageResult = setmealService.findPage(queryPageBean);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,setmealPageResult);
+    }
     /**
      * 添加检查组套餐
      * @param setmeal
@@ -45,18 +81,6 @@ public class SetmealController {
         setmealService.add(setmeal, checkgroupIds);
         return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
     }
-
-    /**
-     * 套餐分页查询
-     * @param queryPageBean
-     * @return
-     */
-    @PostMapping("/findPage")
-    public Result findPage(@RequestBody QueryPageBean queryPageBean){
-        PageResult<Setmeal> pageResult = setmealService.findPage(queryPageBean);
-        return new Result(true,MessageConstant.QUERY_SETMEAL_SUCCESS,pageResult);
-    }
-
     /**
      * 通过id查询套餐信息 回显
      */
@@ -68,10 +92,10 @@ public class SetmealController {
         Setmeal setmeal = setmealService.findById(setmealLzy);
         // 前端要显示图片需要全路径
         // 封装到map中，解决图片路径问题
-        Map<String,Object> resultMap = new HashMap<String,Object>();
-        resultMap.put("setmeal", setmeal); // formData
-        resultMap.put("domain", QiNiuUtils.DOMAIN); // domain
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,resultMap);
+        Map<String,Object> map = new HashMap<String,Object>(2);
+        map.put("setmeal", setmeal); // formData
+        map.put("domain", QiNiuUtils.DOMAIN); // domain
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,map);
     }
 
     /**
@@ -80,7 +104,7 @@ public class SetmealController {
     @GetMapping("/findCheckgroupIdsBySetmealId")
     public Result findCheckgroupIdsBySetmealId(int id){
         List<Integer> checkgroupIds = setmealService.findCheckgroupIdsBySetmealId(id);
-        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkgroupIds);
+        return new Result(true, "修改",checkgroupIds);
     }
 
     /**

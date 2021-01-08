@@ -122,9 +122,7 @@ public class CheckItemServiceImpl implements CheckItemService {
     public PageResult<CheckItem> findPage(QueryPageBean queryPageBean) {
         //使用第二种，mapper接口方式调用，推荐使用方法。传入两个参数当前页数和每页条数
         // pageSize能无限大吗？使用三元运算符进行修改
-        if (queryPageBean.getPageSize()>50){
-            queryPageBean.setPageSize(50);
-        }
+        queryPageBean.setPageSize(queryPageBean.getPageSize()>50?50:queryPageBean.getPageSize());
         //传入两个数据当前页数和每页条数
         //pageHelper.startPage(1,10);
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());

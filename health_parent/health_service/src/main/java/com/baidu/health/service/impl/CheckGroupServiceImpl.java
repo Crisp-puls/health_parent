@@ -143,9 +143,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
      */
     @Override
     public PageResult<CheckGroup> findPage(QueryPageBean queryPageBean) {
-        if (queryPageBean.getPageSize()>50){
-            queryPageBean.setPageSize(50);
-        }
+        queryPageBean.setPageSize(queryPageBean.getPageSize()>50?50:queryPageBean.getPageSize());
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
         // 条件查询
         if(StringUtils.isNotEmpty(queryPageBean.getQueryString())){
@@ -173,7 +171,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         // 没有被套餐使用,就可以删除数据
         // 先删除检查组与检查项的关系
         checkGroupDao.deleteCheckGroupCheckItem(id);
-        // 删除检查组
+        // 再删除检查组
         checkGroupDao.deleteById(id);
     }
 
