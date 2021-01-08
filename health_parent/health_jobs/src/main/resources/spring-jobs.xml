@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 指定应用名称 -->
+    <dubbo:application name="health_job" />
+    <!--指定服务注册中心地址-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <!-- 任务类要注册 使用dubbo 扫包  -->
+    <dubbo:annotation package="com.baidu.health.job"/>
+    <!-- 使用注解方式  -->
+<!--    <context:component-scan base-package="com.baidu.health.job"/>-->
+<!--    &lt;!&ndash;  任务的注解驱动  &ndash;&gt;-->
+<!--    <task:annotation-driven/>-->
+<!--    &lt;!&ndash;  任务的线程池  &ndash;&gt;-->
+<!--    <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler"/>-->
+
+<!--使用配置文件的方式类上不需要加任何注解 只有接口上要加订阅注解-->
+    <!-- 1. 注册自定义的任务类   -->
+    <bean id="myJob" class="com.baidu.health.job.CleanImgJob"/>
+    <!-- 2. 配置一个jobDetail, 任务策略, 关联任务对象与方法   -->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!--任务触发时，就会找容器中的那个ref关联bean对象 -->
+        <property name="targetObject" ref="myJob"/>
+        <!--指定调用的方法-->
+        <property name="targetMethod" value="cleanImg"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <!-- 3. 配置一个触发器trigger, 关联任务策略，触发时机表达式   -->
+    <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!--触发时使用的任务策略-->
+        <property name="jobDetail" ref="jobDetail"/>
+        <!--触发的时机7子表达式-->
+        <!--每间隔2秒触发一次-->
+        <property name="cronExpression" value="0/30 * * * * ?"/>
+    </bean>
+    <!-- 4. 配置调度容器，绑定触发器   -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <!--绑定触发器-->
+                <ref bean="trigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

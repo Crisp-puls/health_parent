@@ -123,7 +123,7 @@ public class SetmealController {
      * @param id
      * @return
      */
-    @PostMapping("/delete")
+    @PostMapping("/deleteById")
     public Result delete(int id){
         setmealService.deleteById(id);
         return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);

@@ -48,4 +48,9 @@ public interface SetmealService {
      * @param id
      */
     void deleteById(int id)  throws BusinessException;
+    /**
+     * 查出数据库中的所有图片
+     * @return
+     */
+    List<String> findImgs();
 }
