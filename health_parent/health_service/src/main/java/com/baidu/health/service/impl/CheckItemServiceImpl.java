@@ -141,8 +141,6 @@ public class CheckItemServiceImpl implements CheckItemService {
     }
 }
 
-
-
 /*
  改bug
 */

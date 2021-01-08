@@ -19,7 +19,7 @@ public interface CheckGroupService {
     /**
      * 添加检查组
      */
-    void add(CheckGroup checkGroup, Integer[] checkitemIds);
+    void add(CheckGroup checkGroup, Integer[] checkitemIds)  throws BusinessException;
 
     /**
      * 检查项的分页查询
@@ -47,7 +47,7 @@ public interface CheckGroupService {
      * @param checkgroup 检查组信息
      * @param checkitemIds 选中的检查项id数组
      */
-    void update(CheckGroup checkgroup, Integer[] checkitemIds);
+    void update(CheckGroup checkgroup, Integer[] checkitemIds) throws BusinessException;
 
     /**
      * 删除检查组

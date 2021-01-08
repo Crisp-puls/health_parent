@@ -2,13 +2,10 @@ package com.baidu.health.service.impl;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
-import com.baidu.health.constant.MessageConstant;
 import com.baidu.health.dao.SetmealDao;
 import com.baidu.health.entity.PageResult;
 import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.exceptions.BusinessException;
-import com.baidu.health.pojo.CheckGroup;
-import com.baidu.health.pojo.CheckItem;
 import com.baidu.health.pojo.Setmeal;
 import com.baidu.health.service.SetmealService;
 import com.github.pagehelper.Page;

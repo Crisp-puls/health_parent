@@ -2,6 +2,7 @@ package com.baidu.health.service;
 
 import com.baidu.health.entity.PageResult;
 import com.baidu.health.entity.QueryPageBean;
+import com.baidu.health.exceptions.BusinessException;
 import com.baidu.health.pojo.Setmeal;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface SetmealService {
      * @param setmeal
      * @param checkgroupIds
      */
-    void add(Setmeal setmeal, Integer[] checkgroupIds);
+    void add(Setmeal setmeal, Integer[] checkgroupIds)  throws BusinessException;
 
     /**
      * 套餐分页查询
@@ -40,11 +41,11 @@ public interface SetmealService {
      * @param setmeal
      * @param checkgroupIds
      */
-    void update(Setmeal setmeal, Integer[] checkgroupIds);
+    void update(Setmeal setmeal, Integer[] checkgroupIds)  throws BusinessException;
 
     /**
      * 根据id删除套餐信息
      * @param id
      */
-    void deleteById(int id);
+    void deleteById(int id)  throws BusinessException;
 }
