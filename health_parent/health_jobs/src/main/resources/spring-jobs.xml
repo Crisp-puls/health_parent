@@ -11,15 +11,19 @@
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
     <!-- 任务类要注册 使用dubbo 扫包  -->
     <dubbo:annotation package="com.baidu.health.job"/>
+
     <!-- 使用注解方式  -->
-<!--    <context:component-scan base-package="com.baidu.health.job"/>-->
-<!--    &lt;!&ndash;  任务的注解驱动  &ndash;&gt;-->
+<!--        这里不需要进行扫包 本来是扫quartz注解的 但是这里我们用了dubbo来进行扫包 -->
+<!--        不仅是扫dubbo注解还让dubbo来 扫quartz注解创建对象 单独用需要 -->
+<!--   ！<context:component-scan base-package="com.baidu.health.job"/>-->
+
+<!--    &lt;!&ndash;  1.任务的注解驱动  &ndash;&gt;-->
 <!--    <task:annotation-driven/>-->
-<!--    &lt;!&ndash;  任务的线程池  &ndash;&gt;-->
+<!--    &lt;!&ndash;  2.任务的线程池  &ndash;&gt;-->
 <!--    <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler"/>-->
 
 <!--使用配置文件的方式类上不需要加任何注解 只有接口上要加订阅注解-->
-    <!-- 1. 注册自定义的任务类   -->
+    <!-- 1. 注册自定义的任务类 放进spring容器中  -->
     <bean id="myJob" class="com.baidu.health.job.CleanImgJob"/>
     <!-- 2. 配置一个jobDetail, 任务策略, 关联任务对象与方法   -->
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

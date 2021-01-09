@@ -11,7 +11,6 @@ import java.util.List;
 
 //@Component
 public class CleanImgJob {
-
     /**
      * 订阅服务
      */
