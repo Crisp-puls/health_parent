@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.baidu.health.constant.MessageConstant;
 import com.baidu.health.entity.Result;
 import com.baidu.health.pojo.OrderSetting;
+import com.baidu.health.service.OrderSettingService;
 import com.baidu.health.utils.POIUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +37,14 @@ public class OrderSettingController {
             List<OrderSetting> orderSettingList = new ArrayList<OrderSetting>();
             // 日期格式解析
             SimpleDateFormat sdf = new SimpleDateFormat(POIUtils.DATE_FORMAT);
+            //设置模型Date
             Date orderDate = null;
+            //设置实体类模型封装对象
             OrderSetting os = null;
+            //遍历list list里面是数组封装了两个对象一个预约日期
+            // 一个预约人数 两个数都是String类型的Excel表中传入的
             for (String[] dataArr : strings) {
+                //
                 orderDate = sdf.parse(dataArr[0]);
                 int number = Integer.valueOf(dataArr[1]);
                 os = new OrderSetting(orderDate,number);

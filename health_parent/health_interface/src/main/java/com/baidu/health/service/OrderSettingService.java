@@ -1,4 +1,4 @@
-package com.baidu.health.controller;
+package com.baidu.health.service;
 
 import com.baidu.health.pojo.OrderSetting;
 

@@ -1,9 +1,11 @@
 package com.baidu.health.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.baidu.health.controller.OrderSettingService;
+
+import com.baidu.health.dao.OrderSettingDao;
 import com.baidu.health.exceptions.BusinessException;
 import com.baidu.health.pojo.OrderSetting;
+import com.baidu.health.service.OrderSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +35,11 @@ public class OrderSettingServiceImpl implements OrderSettingService {
                         throw new BusinessException(orderSetting.getOrderDate() + " 中已预约数量不能大于可预约数量");
                     }
                     orderSettingDao.updateNumber(orderSetting);
-                }else{
+                }else if(osInDB.getReservations() < orderSetting.getNumber()){
                     // 不存在
                     orderSettingDao.add(orderSetting);
+                }else {
+
                 }
             }
         }
