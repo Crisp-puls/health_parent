@@ -22,8 +22,8 @@ public interface OrderSettingService {
     List<Map<String, Integer>> findOrderSettingByMonth(String month);
 
     /**
-     * 根据当前日期编辑或者添加可预约人数
+     * 根据传入的日期编辑可预约人数或者添加可预约人数和日期
      * @param orderSetting
      */
-    void editNumberByDate(OrderSetting orderSetting);
+    void editNumberByDate(OrderSetting orderSetting) throws BusinessException;
 }

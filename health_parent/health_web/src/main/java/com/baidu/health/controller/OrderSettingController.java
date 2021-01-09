@@ -75,7 +75,7 @@ public class OrderSettingController {
     }
 
     /**
-     * 根据当前日期编辑或者添加可预约人数
+     * 根据传入的日期编辑可预约人数或者添加可预约人数和日期
      * @param orderSetting
      * @return
      */
