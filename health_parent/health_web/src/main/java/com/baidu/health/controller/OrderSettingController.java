@@ -33,21 +33,24 @@ public class OrderSettingController {
         try {
             // 读取excel内容
             List<String[]> strings = POIUtils.readExcel(excelFile);
-            // 转成List<OrderSetting>
+            // 转成List<OrderSetting> 构建集合模型
             List<OrderSetting> orderSettingList = new ArrayList<OrderSetting>();
             // 日期格式解析
             SimpleDateFormat sdf = new SimpleDateFormat(POIUtils.DATE_FORMAT);
-            //设置模型Date
+            //构建模型Date
             Date orderDate = null;
-            //设置实体类模型封装对象
+            //设置实体类模型封装对象 构建实体类模型
             OrderSetting os = null;
             //遍历list list里面是数组封装了两个对象一个预约日期
-            // 一个预约人数 两个数都是String类型的Excel表中传入的
+            // 一个是可预约人数 两个数都是String类型的Excel表中传入的
             for (String[] dataArr : strings) {
-                //
+                //拿到单个行的集合dataArr[0]表示日期 用日期格式化
                 orderDate = sdf.parse(dataArr[0]);
+                //dataArr[1]拿到可预约人数将他转成int类型的
                 int number = Integer.valueOf(dataArr[1]);
+                //创建一个实体类封装两个属性 给对象赋值
                 os = new OrderSetting(orderDate,number);
+                //添加进之前构建的模型中
                 orderSettingList.add(os);
             }
             // 调用业务服务
