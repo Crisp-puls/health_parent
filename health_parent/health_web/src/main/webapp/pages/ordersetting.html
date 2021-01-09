@@ -147,7 +147,7 @@
                     month+= this.currentMonth
                     //alert(month);
                     // 发送请求去查询这个月的预约设置信息
-                    axios.get('/ordersetting/getOrderSettingByMonth.do?month=' + month).then(res => {
+                    axios.get('/ordersetting/findOrderSettingByMonth.do?month=' + month).then(res => {
                         // 成功的话绑定数据到leftobj里
                         if(res.data.flag){
                             this.leftobj = res.data.data;

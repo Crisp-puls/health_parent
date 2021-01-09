@@ -3,6 +3,8 @@ package com.baidu.health.dao;
 import com.baidu.health.pojo.OrderSetting;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public interface OrderSettingDao {
     /**
@@ -23,4 +25,11 @@ public interface OrderSettingDao {
      * @param orderSetting
      */
     void add(OrderSetting orderSetting);
+
+    /**
+     * 通过月份模糊查询当月预约设置信息集合
+     * @param month
+     * @return
+     */
+    List<Map<String, Integer>> findOrderSettingByMonth(String month);
 }

@@ -21,9 +21,8 @@
         values (#{orderDate,jdbcType=DATE},#{number},#{reservations})
     </insert>
 
-
-
-    <select id="getOrderSettingByMonth" parameterType="string" resultType="map">
+<!--    通过月份模糊查询当月预约设置信息集合-->
+    <select id="findOrderSettingByMonth" parameterType="string" resultType="map">
         select CAST(DATE_FORMAT(orderdate,'%d') AS SIGNED) date,number,reservations
         From t_ordersetting where orderDate like #{month}
     </select>

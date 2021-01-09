@@ -6,15 +6,14 @@ import com.baidu.health.entity.Result;
 import com.baidu.health.pojo.OrderSetting;
 import com.baidu.health.service.OrderSettingService;
 import com.baidu.health.utils.POIUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ordersetting")
@@ -60,5 +59,29 @@ public class OrderSettingController {
             e.printStackTrace();
             return new Result(false, MessageConstant.IMPORT_ORDERSETTING_FAIL);
         }
+    }
+
+    /**
+     * 通过月份模糊查询当月预约设置信息集合
+     * @param month
+     * @return
+     */
+    @GetMapping("/findOrderSettingByMonth")
+    public Result findOrderSettingByMonth(String month){
+        //前端需要的是 当月每日的  日 可预约数 已预约数字 (1,500,300)
+        //所以使用集合嵌套map的形式且map类型都是<String,Integer
+        List<Map<String,Integer>> data = orderSettingService.findOrderSettingByMonth(month);
+        return new Result(true, MessageConstant.GET_ORDERSETTING_SUCCESS,data);
+    }
+
+    /**
+     * 根据当前日期编辑或者添加可预约人数
+     * @param orderSetting
+     * @return
+     */
+    @PostMapping("editNumberByDate")
+    public Result editNumberByDate(@RequestBody OrderSetting orderSetting){
+        orderSettingService.editNumberByDate(orderSetting);
+        return new Result(true, MessageConstant.ORDERSETTING_SUCCESS);
     }
 }
