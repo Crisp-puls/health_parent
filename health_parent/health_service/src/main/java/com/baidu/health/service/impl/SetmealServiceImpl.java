@@ -158,4 +158,13 @@ public class SetmealServiceImpl implements SetmealService {
     public List<String> findImgs() {
         return setmealDao.findImgs();
     }
+
+    /**
+     * 查询所有的套餐
+     * @return
+     */
+    @Override
+    public List<Setmeal> findAll() {
+        return setmealDao.findAll();
+    }
 }

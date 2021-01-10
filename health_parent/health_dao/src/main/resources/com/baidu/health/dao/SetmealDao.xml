@@ -83,4 +83,9 @@
     <select id="findImgs" resultType="String">
     select img from t_setmeal
     </select>
+
+    <!--查询所有-->
+    <select id="findAll" resultType="setmeal">
+    select * from t_setmeal
+    </select>
 </mapper>
