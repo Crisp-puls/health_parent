@@ -36,13 +36,12 @@ public class SetmealMobileController {
     }
 
     /**
-     * 查询套餐详情
+     * 查询套餐详情 五表关联
      */
     @GetMapping("/findDetailById")
     public Result findDetailById(int id){
-        // 调用服务查询详情
         Setmeal setmeal = setmealService.findDetailById(id);
-        // 设置图片的完整路径
+        // 拼接图片的完整路径
         setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
         return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
     }
