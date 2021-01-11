@@ -6,6 +6,7 @@ import com.baidu.health.entity.Result;
 import com.baidu.health.pojo.OrderSetting;
 import com.baidu.health.service.OrderSettingService;
 import com.baidu.health.utils.POIUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,7 +81,7 @@ public class OrderSettingController {
      * @return
      */
     @PostMapping("editNumberByDate")
-    public Result editNumberByDate(@RequestBody OrderSetting orderSetting){
+    public Result editNumberByDate(@Validated @RequestBody OrderSetting orderSetting){
         orderSettingService.editNumberByDate(orderSetting);
         return new Result(true, MessageConstant.ORDERSETTING_SUCCESS);
     }

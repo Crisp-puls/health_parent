@@ -8,6 +8,7 @@ import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.entity.Result;
 import com.baidu.health.pojo.CheckItem;
 import com.baidu.health.service.CheckItemService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -36,7 +37,7 @@ public class CheckItemController {
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestBody CheckItem checkItem){
+    public Result add(@Validated @RequestBody CheckItem checkItem){
         checkItemService.add(checkItem);
         return new Result(true,MessageConstant.ADD_CHECKGROUP_SUCCESS);
     }
@@ -53,7 +54,6 @@ public class CheckItemController {
         return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,pageResult);
     }
 
-    //TODO 是否需要实现懒加载？
 
     /**
      * 根据id删除检查项  改数据库的都需要使用post请求
@@ -85,7 +85,7 @@ public class CheckItemController {
      * @return
      */
     @PostMapping("/update")
-    public Result update(@RequestBody CheckItem checkItem){
+    public Result update(@Validated @RequestBody CheckItem checkItem){
         checkItemService.update(checkItem);
         return new Result(true,MessageConstant.EDIT_CHECKGROUP_SUCCESS);
     }

@@ -8,7 +8,7 @@
         <selectKey resultType="int" keyProperty="id" order="AFTER">
             select last_insert_id()
         </selectKey>
-     ``   insert into t_setmeal (name,code,helpCode,sex,age,price,remark,attention,img)
+        insert into t_setmeal (name,code,helpCode,sex,age,price,remark,attention,img)
         values(#{name},#{code},#{helpCode},#{sex},#{age},#{price},#{remark},#{attention},#{img})
     </insert>
 

@@ -7,6 +7,7 @@ import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.entity.Result;
 import com.baidu.health.pojo.CheckGroup;
 import com.baidu.health.service.CheckGroupService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class CheckGroupController {
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestBody CheckGroup checkGroup,Integer[] checkitemIds){
+    public Result add(@Validated @RequestBody CheckGroup checkGroup, Integer[] checkitemIds){
         checkGroupService.add(checkGroup,checkitemIds);
         return new Result(true,MessageConstant.ADD_CHECKGROUP_SUCCESS);
     }
@@ -88,7 +89,7 @@ public class CheckGroupController {
      * @return
      */
     @PostMapping("/update")
-    public Result update(@RequestBody CheckGroup checkgroup, Integer[] checkitemIds){
+    public Result update(@Validated @RequestBody CheckGroup checkgroup, Integer[] checkitemIds){
         // 调用服务 修改检查组
         checkGroupService.update(checkgroup, checkitemIds);
         return new Result(true, MessageConstant.EDIT_CHECKGROUP_SUCCESS);

@@ -1,4 +1,4 @@
-package com.baidu.health.job;
+package com.baidu.health.jobs;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.baidu.health.pojo.Setmeal;

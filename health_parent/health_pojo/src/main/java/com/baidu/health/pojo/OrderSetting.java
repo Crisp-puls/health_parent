@@ -1,5 +1,7 @@
 package com.baidu.health.pojo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,8 +10,15 @@ import java.util.Date;
  */
 public class OrderSetting implements Serializable{
     private Integer id ;
+
     private Date orderDate;//预约设置日期
-    private int number;//可预约人数 
+
+    @Min(value = 1,message = "可预约人数不能低于1人！！")
+    @Max(value = 99999,message = "可预约人数不能超过99999人！！")
+    private int number;//可预约人数
+
+    @Min(value = 1,message = "已预约人数不能低于1人！！")
+    @Max(value = 99999,message = "已预约人数不能超过99999人！！")
     private int reservations ;//已预约人数
 
     public OrderSetting() {

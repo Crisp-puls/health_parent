@@ -1,5 +1,9 @@
 package com.baidu.health.pojo;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 /**
@@ -7,10 +11,13 @@ import java.io.Serializable;
  */
 public class CheckItem implements Serializable {
     private Integer id;//主键
+    @Length(min =4,max = 10,message = "项目编码的长度必须为4-10个")
     private String code;//项目编码
     private String name;//项目名称
     private String sex;//适用性别
     private String age;//适用年龄（范围），例如：20-50
+    @Min(value = 10,message = "价格不能低于10元！！")
+    @Max(value = 99999,message = "价格不能高于99999！！")
     private Float price;//价格
     private String type;//检查项类型，分为检查和检验两种类型
     private String remark;//项目说明

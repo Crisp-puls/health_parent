@@ -3209,7 +3209,7 @@ Watcher.prototype.update = function update () {
 };
 
 /**
- * Scheduler job interface.
+ * Scheduler jobs interface.
  * Will be called by the scheduler.
  */
 Watcher.prototype.run = function run () {

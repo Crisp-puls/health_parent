@@ -5,9 +5,13 @@ import com.baidu.health.exceptions.BusinessException;
 import com.baidu.health.exceptions.SysException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 
 /**
@@ -46,5 +50,27 @@ public class MyExceptionAdvice {
     public Result handleException(Exception be){
         log.error("Unknown exception happen.",be);
         return new Result(false,"Unknown exception happen, please contact our administrator!");
+    }
+
+    /**
+     * 提交的参数校验提示信息
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
+        //校验没通过的字段
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        if (null !=fieldErrors){
+            StringBuilder sb =new StringBuilder();
+            for (FieldError fieldError : fieldErrors) {
+//                fieldError.getField()+":"+
+                sb.append(fieldError.getDefaultMessage());
+                sb.append(":");
+            }
+            if (sb.length()>0){
+                sb.setLength(sb.length()-1);
+            }
+            return new Result(false,sb.toString());
+        }
+        return new Result(false,"参数校验失败！");
     }
 }

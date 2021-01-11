@@ -12,6 +12,7 @@ import com.baidu.health.utils.QiNiuUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
@@ -83,7 +84,10 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
+    public Result add(@Validated @RequestBody Setmeal setmeal, Integer[] checkgroupIds){
+        if (setmeal.getImg()==null||setmeal.getImg().length()==0){
+            throw new BusinessException("图片不能为空");
+        }
         Integer setmealId = setmealService.add(setmeal, checkgroupIds);
         // 添加成功, 生成静态页面
         Jedis jedis = jedisPool.getResource();
@@ -124,7 +128,10 @@ public class SetmealController {
      * 修改套餐
      */
     @PostMapping("/update")
-    public Result update(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
+    public Result update(@Validated @RequestBody Setmeal setmeal,Integer[] checkgroupIds){
+        if (setmeal.getImg()==null||setmeal.getImg().length()==0){
+            throw new BusinessException("图片不能为空");
+        }
         // 调用业务服务修改
         setmealService.update(setmeal, checkgroupIds);
         // 响应结果
