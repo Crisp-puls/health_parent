@@ -24,4 +24,5 @@
         select CAST(DATE_FORMAT(orderdate,'%d') AS SIGNED) date,number,reservations
         From t_ordersetting where orderDate like #{month}
     </select>
+
 </mapper>

@@ -13,7 +13,7 @@ public interface SetmealService {
      * @param setmeal
      * @param checkgroupIds
      */
-    void add(Setmeal setmeal, Integer[] checkgroupIds)  throws BusinessException;
+    Integer add(Setmeal setmeal, Integer[] checkgroupIds)  throws BusinessException;
 
     /**
      * 套餐分页查询

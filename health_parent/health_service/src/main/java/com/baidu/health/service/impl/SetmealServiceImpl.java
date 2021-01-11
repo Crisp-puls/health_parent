@@ -27,7 +27,7 @@ public class SetmealServiceImpl implements SetmealService {
      */
     @Override
     @Transactional
-    public void add(Setmeal setmeal, Integer[] checkgroupIds) {
+    public Integer add(Setmeal setmeal, Integer[] checkgroupIds) {
         Setmeal findByNameSetmeal =setmealDao.findByName(setmeal);
         Setmeal findByCodeSetmeal =setmealDao.findByCode(setmeal);
         if (null != findByNameSetmeal) {
@@ -50,6 +50,7 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmealId, checkgroupId);
             }
         }
+        return setmealId;
     }
 
     /**

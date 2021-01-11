@@ -1,53 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- 指定应用名称 -->
-    <dubbo:application name="health_job" />
-    <!--指定服务注册中心地址-->
-    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
-    <!-- 任务类要注册 使用dubbo 扫包  -->
-    <dubbo:annotation package="com.baidu.health.job"/>
+    <!--freemarker配置，生成后文件的存放目录-->
+    <context:property-placeholder location="classpath:freemarker.properties,classpath:redis.properties"/>
 
-    <!-- 使用注解方式  -->
-<!--        这里不需要进行扫包 本来是扫quartz注解的 但是这里我们用了dubbo来进行扫包 -->
-<!--        不仅是扫dubbo注解还让dubbo来 扫quartz注解创建对象 单独用需要 -->
-<!--   ！<context:component-scan base-package="com.baidu.health.job"/>-->
-
-    <!--  1.任务的注解驱动  -->
+<!--5.1 task:annotation-driven, ThreadPoolTaskScheduler -->
     <task:annotation-driven/>
-    <!--  2.任务的线程池  -->
     <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler"/>
+<!--5.2 应用名称 -->
+    <dubbo:application name="health_jobs"/>
+<!--5.3 注册中心在哪 -->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+<!--5.4 dubbo注解扫包(controller时的扫包)  -->
+    <dubbo:annotation package="com.baidu.health.jobs"/>
 
-<!--&lt;!&ndash;使用配置文件的方式类上不需要加任何注解 只有接口上要加订阅注解&ndash;&gt;-->
-<!--    &lt;!&ndash; 1. 注册自定义的任务类 放进spring容器中  &ndash;&gt;-->
-<!--    <bean id="myJob" class="com.baidu.health.job.CleanImgJob"/>-->
-<!--    &lt;!&ndash; 2. 配置一个jobDetail, 任务策略, 关联任务对象与方法   &ndash;&gt;-->
-<!--    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-<!--        &lt;!&ndash;任务触发时，就会找容器中的那个ref关联bean对象 &ndash;&gt;-->
-<!--        <property name="targetObject" ref="myJob"/>-->
-<!--        &lt;!&ndash;指定调用的方法&ndash;&gt;-->
-<!--        <property name="targetMethod" value="cleanImg"/>-->
-<!--        <property name="concurrent" value="false"/>-->
-<!--    </bean>-->
-<!--    &lt;!&ndash; 3. 配置一个触发器trigger, 关联任务策略，触发时机表达式   &ndash;&gt;-->
-<!--    <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-<!--        &lt;!&ndash;触发时使用的任务策略&ndash;&gt;-->
-<!--        <property name="jobDetail" ref="jobDetail"/>-->
-<!--        &lt;!&ndash;触发的时机7子表达式&ndash;&gt;-->
-<!--        &lt;!&ndash;每间隔2秒触发一次&ndash;&gt;-->
-<!--        <property name="cronExpression" value="0/30 * * * * ?"/>-->
-<!--    </bean>-->
-<!--    &lt;!&ndash; 4. 配置调度容器，绑定触发器   &ndash;&gt;-->
-<!--    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
-<!--        <property name="triggers">-->
-<!--            <list>-->
-<!--                &lt;!&ndash;绑定触发器&ndash;&gt;-->
-<!--                <ref bean="trigger"/>-->
-<!--            </list>-->
-<!--        </property>-->
-<!--    </bean>-->
+<!--  导入freemarker  -->
+    <import resource="classpath:spring-freemarker.xml"/>
+    <!--导入redis-->
+    <import resource="classpath:spring-redis.xml"/>
 </beans>
