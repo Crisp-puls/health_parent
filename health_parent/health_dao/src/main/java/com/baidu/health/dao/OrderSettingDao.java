@@ -32,4 +32,11 @@ public interface OrderSettingDao {
      * @return
      */
     List<Map<String, Integer>> findOrderSettingByMonth(String month);
+
+    /**
+     * 更新已预约人数
+     * @param orderSetting
+     * @return 受影响的记录数：0：执行不成功，>0代表执行成功
+     */
+    int editReservationsByOrderDate(OrderSetting orderSetting);
 }

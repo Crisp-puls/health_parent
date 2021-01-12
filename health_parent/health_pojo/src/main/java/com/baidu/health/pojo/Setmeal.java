@@ -25,8 +25,8 @@ public class Setmeal implements Serializable {
     @Length(min =4,max = 10,message = "套餐助记的长度必须为4-10个")
     private String helpCode;
 
-    @NotNull(message = "年龄不能为空")
-    @Range(min = 0, max = 2, message = "年龄不能为空")
+    @NotNull(message = "性别不能为空")
+    @Range(min = 0, max = 2, message = "性别不能为空")
     private String sex;//套餐适用性别：0不限 1男 2女
 
     @NotNull(message = "使用年龄不能为空")
@@ -38,15 +38,17 @@ public class Setmeal implements Serializable {
     @Max(value = 99999,message = "套餐价格不能高于99999")
     private Float price;//套餐价格
 
-    @NotBlank(message = "套餐说明不能为空")
+
     private String remark;
 
-    @NotBlank(message = "注意事项不能为空")
+
     private String attention;
 
     @NotBlank(message = "图片不能为空")
     private String img;//套餐对应图片存储路径
 
+
+    @Size(min = 1)
     private List<CheckGroup> checkGroups;//体检套餐对应的检查组，多对多关系
 
     public List<CheckGroup> getCheckGroups() {

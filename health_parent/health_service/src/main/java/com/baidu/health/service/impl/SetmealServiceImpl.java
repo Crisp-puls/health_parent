@@ -12,9 +12,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
+@Validated
 @Service(interfaceClass = SetmealService.class)
 public class SetmealServiceImpl implements SetmealService {
 
@@ -87,7 +90,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @return
      */
     @Override
-    public List<Integer> findCheckgroupIdsBySetmealId(int id) {
+    public List<Integer> findCheckgroupIdsBySetmealId(@Min(value = 1,message ="id不能小于1") int id) {
         return setmealDao.findCheckgroupIdsBySetmealId(id);
     }
 
