@@ -8,6 +8,7 @@ import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.entity.Result;
 import com.baidu.health.pojo.CheckItem;
 import com.baidu.health.service.CheckItemService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class CheckItemController {
      * @return
      */
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('CHECKITEM_ADD')")
     public Result add(@Validated @RequestBody CheckItem checkItem){
         checkItemService.add(checkItem);
         return new Result(true,MessageConstant.ADD_CHECKGROUP_SUCCESS);

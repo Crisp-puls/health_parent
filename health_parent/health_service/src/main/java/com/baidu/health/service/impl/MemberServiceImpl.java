@@ -6,6 +6,9 @@ import com.baidu.health.pojo.Member;
 import com.baidu.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service(interfaceClass = MemberService.class)
 public class MemberServiceImpl implements MemberService {
@@ -32,5 +35,23 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void add(Member member) {
         memberDao.add(member);
+    }
+
+    /**
+     * 统计每个月的会员总数量
+     * @param months
+     * @return
+     */
+    @Override
+    public List<Integer> getMemberReport(List<String> months) {
+        List<Integer> list = new ArrayList<Integer>();
+        if(null != months){
+            // 2020-02
+            for (String month : months) {
+                month+="-31";
+                list.add(memberDao.findMemberCountBeforeDate(month));
+            }
+        }
+        return list;
     }
 }

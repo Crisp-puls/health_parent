@@ -17,11 +17,11 @@ public class OrderSetting implements Serializable{
 
     @Min(value = 1,message = "可预约人数不能低于1人！！")
     @Max(value = 99999,message = "可预约人数不能超过99999人！！")
-    private int number;//可预约人数
+    private Integer number;//可预约人数
 
     @Min(value = 1,message = "已预约人数不能低于1人！！")
     @Max(value = 99999,message = "已预约人数不能超过99999人！！")
-    private int reservations ;//已预约人数
+    private Integer reservations ;//已预约人数
 
     public OrderSetting() {
     }
@@ -47,7 +47,7 @@ public class OrderSetting implements Serializable{
         this.orderDate = orderDate;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
@@ -55,7 +55,7 @@ public class OrderSetting implements Serializable{
         this.number = number;
     }
 
-    public int getReservations() {
+    public Integer getReservations() {
         return reservations;
     }
 

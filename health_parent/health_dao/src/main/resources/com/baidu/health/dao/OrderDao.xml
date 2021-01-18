@@ -83,4 +83,8 @@
           group by o.setmeal_id
           order by setmeal_count desc limit 0,4
     </select>
+
+    <select id="findOrderCountBetweenDate" parameterType="string" resultType="int">
+        select count(1) from t_order where orderDate between #{startDate} and #{endDate}
+    </select>
 </mapper>

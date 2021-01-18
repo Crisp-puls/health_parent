@@ -61,6 +61,7 @@ public class ValidateCodeController {
     public Result send4Login(String telephone){
         Jedis jedis = jedisPool.getResource();
         //- 判断redis中是否存在验证码
+        // 拼接获取redis中的key
         String key = RedisMessageConstant.SENDTYPE_LOGIN + "_" + telephone;
         if (jedis.exists(key)) {
             //- 存在则提示已经发送过了，请注意查收

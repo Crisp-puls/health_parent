@@ -2,6 +2,8 @@ package com.baidu.health.service;
 
 import com.baidu.health.pojo.Member;
 
+import java.util.List;
+
 /**
  * <p>
  *
@@ -23,4 +25,10 @@ public interface MemberService {
      * @param member
      */
     void add(Member member);
+    /**
+     * 统计每个月的会员总数量
+     * @param months
+     * @return
+     */
+    List<Integer> getMemberReport(List<String> months);
 }

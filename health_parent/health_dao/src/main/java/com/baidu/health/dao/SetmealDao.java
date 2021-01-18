@@ -1,11 +1,14 @@
 package com.baidu.health.dao;
 
 
+import com.baidu.health.pojo.CheckGroup;
+import com.baidu.health.pojo.CheckItem;
 import com.baidu.health.pojo.Setmeal;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SetmealDao {
     /**
@@ -99,4 +102,16 @@ public interface SetmealDao {
      * @return
      */
     Setmeal findDetailById(int id);
+
+    Setmeal findDetailById2(int id);
+
+    List<CheckGroup> findCheckGroupListBySetmealId(int id);
+
+    List<CheckItem> findCheckItemByCheckGroupId(Integer id);
+
+    /**
+     * 统计每个套餐的预约数
+     * @return
+     */
+    List<Map<String, Object>> getSetmealReport();
 }

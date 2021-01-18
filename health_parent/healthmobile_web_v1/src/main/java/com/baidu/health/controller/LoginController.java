@@ -36,14 +36,17 @@ public class LoginController {
     public Result login(@RequestBody Map<String,String> loginInfo, HttpServletResponse res){
         // 校验验证码
         //- 拼接redis的key, 获取redis中的验证码
+        //先获取手机号
         String telephone = loginInfo.get("telephone");
+        // 拼接手机号获取key
         String key = RedisMessageConstant.SENDTYPE_LOGIN + "_" + telephone;
         Jedis jedis = jedisPool.getResource();
+        // 查看redis中是否有该验证码
         String codeInRedis = jedis.get(key);
         log.info("codeInRedis:{}",codeInRedis);
 
         if(StringUtils.isEmpty(codeInRedis)) {
-            //- 没有值
+            //- 没有值 说验证码失效或者没有获取验证码
             //  - 提示重新获取验证码
             return new Result(false, "请重新获取验证码!");
         }
@@ -67,6 +70,7 @@ public class LoginController {
             member.setRemark("快速登陆");
             memberService.add(member);
         }
+        //不为空或者已经注册成会员了
         // 添加cookie跟踪
         Cookie cookie = new Cookie("login_member_telephone",telephone);
         cookie.setMaxAge(30*24*60*60);// cookie存活时间

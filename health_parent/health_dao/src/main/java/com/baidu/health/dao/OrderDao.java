@@ -2,6 +2,7 @@ package com.baidu.health.dao;
 
 
 import com.baidu.health.pojo.Order;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -14,5 +15,12 @@ public interface OrderDao {
     Integer findOrderCountAfterDate(String date);
     Integer findVisitsCountByDate(String date);
     Integer findVisitsCountAfterDate(String date);
-    List<Map> findHotSetmeal();
+    List<Map<String,Object>> findHotSetmeal();
+    /**
+     * 通过日期范围统计预约数
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    int findOrderCountBetweenDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }

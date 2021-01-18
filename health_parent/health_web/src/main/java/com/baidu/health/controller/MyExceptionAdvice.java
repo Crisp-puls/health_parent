@@ -5,6 +5,7 @@ import com.baidu.health.exceptions.BusinessException;
 import com.baidu.health.exceptions.SysException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,6 +52,12 @@ public class MyExceptionAdvice {
         log.error("Unknown exception happen.",be);
         return new Result(false,"Unknown exception happen, please contact our administrator!");
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public Result handleAccessDeniedException(AccessDeniedException e) {
+        return new Result(false, "没有权限");
+    }
+
 
     /**
      * 提交的参数校验提示信息

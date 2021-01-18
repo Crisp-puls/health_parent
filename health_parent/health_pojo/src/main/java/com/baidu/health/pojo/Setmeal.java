@@ -45,7 +45,7 @@ public class Setmeal implements Serializable {
     private String attention;
 
     @NotBlank(message = "图片不能为空")
-    private String img;//套餐对应图片存储路径
+    private String img;//套餐对2图片存储路径-
 
 
     @Size(min = 1)

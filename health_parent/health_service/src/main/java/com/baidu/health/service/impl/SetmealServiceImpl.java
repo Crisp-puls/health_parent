@@ -6,6 +6,8 @@ import com.baidu.health.dao.SetmealDao;
 import com.baidu.health.entity.PageResult;
 import com.baidu.health.entity.QueryPageBean;
 import com.baidu.health.exceptions.BusinessException;
+import com.baidu.health.pojo.CheckGroup;
+import com.baidu.health.pojo.CheckItem;
 import com.baidu.health.pojo.Setmeal;
 import com.baidu.health.service.SetmealService;
 import com.github.pagehelper.Page;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Map;
 
 @Validated
 @Service(interfaceClass = SetmealService.class)
@@ -180,5 +183,39 @@ public class SetmealServiceImpl implements SetmealService {
     @Override
     public Setmeal findDetailById(int id) {
         return setmealDao.findDetailById(id);
+    }
+    @Override
+    public Setmeal findDetailById2(int id) {
+        return setmealDao.findDetailById2(id);
+    }
+
+    @Override
+    public Setmeal findDetailById3(int id) {
+        // 查询套餐信息
+        Setmeal setmealLzy =new Setmeal();
+        setmealLzy.setId(id);
+        Setmeal setmeal = setmealDao.findById(setmealLzy);
+        // 查询套餐下的检查组
+        List<CheckGroup> checkGroups = setmealDao.findCheckGroupListBySetmealId(id);
+        if(null != checkGroups){
+            for (CheckGroup checkGroup : checkGroups) {
+                // 通过检查组id检查检查项列表
+                List<CheckItem> checkItems = setmealDao.findCheckItemByCheckGroupId(checkGroup.getId());
+                // 设置这个检查组下所拥有的检查项
+                checkGroup.setCheckItems(checkItems);
+            }
+            //设置套餐下的所拥有的检查组
+            setmeal.setCheckGroups(checkGroups);
+        }
+        return setmeal;
+    }
+
+    /**
+     * 统计每个套餐的预约数
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getSetmealReport() {
+        return setmealDao.getSetmealReport();
     }
 }

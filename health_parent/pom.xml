@@ -18,6 +18,7 @@
         <module>health_web</module>
         <module>health_jobs</module>
         <module>healthmobile_web_v1</module>
+        <module>security_demo</module>
 
     </modules>
 
